@@ -6,53 +6,47 @@ const ToDosList = () => {
 
 	//																							***BEGINING STYLES***
 
-	const [generalDivStyles, setGeneralDivStyles] = useState(
-		{display: "flex", flexDirection: "column", justifyContent: "center"}
-	)
+	const generalDivStyles = {display: "flex", flexDirection: "column", justifyContent: "center"};
 
-	const [todosStyles, setTodosStyles] = useState(
-		{fontWeight: "200", fontSize: "8vh", textAlign: "center", color: "rgb(200, 150, 150)", margin: "4vh"}
-	)
+	const todosStyles = {fontWeight: "200", fontSize: "8vh", textAlign: "center", color: "rgb(200, 150, 150)", margin: "4vh"};
 
-	const [listStyles, setListStyles] = useState(
-		{width: "60vh", border: "1px solid rgb(150 150 150)", position: "relative", margin: "0 auto", boxShadow: "0vh 0vh 0.2vh rgba(0, 0, 0, 0.6)"}
-	)
+	const listStyles = {width: "60vh", border: "1px solid rgb(150 150 150)", position: "relative", margin: "0 auto", boxShadow: "0vh 0vh 0.2vh rgba(0, 0, 0, 0.6)"};
 
-	const [inputStyles, setInputStyles] = useState(
-		{margin: "0", border: "none", color: "rgb(100, 100, 100)", borderBottom: "1px solid rgb(150 150 150)", fontSize: "2.5vh", fontWeight: "300", padding: "1.5vh 0 1.5vh 6vh", width: "100%"}
-	)
+	const inputStyles = {margin: "0 0 0.5vh 0", border: "none", color: "rgb(100, 100, 100)", borderBottom: "1px solid rgb(150 150 150)", fontSize: "2.5vh", fontWeight: "300", padding: "1.5vh 0 1.5vh 6vh", width: "100%"};
 
-	const [listBottomStyles, setListBottomStyles] = useState(
-		{border: "1px solid rgb(150 150 150)", borderTop: "none", position: "relative", margin: "0 auto", boxShadow: "0vh 0vh 0.2vh rgba(0, 0, 0, 0.6)"}
-	)
+	const itemsStyles = {margin: "0", border: "none", color: "rgb(100, 100, 100)", borderBottom: "1px solid rgb(150 150 150)", fontSize: "2.5vh", fontWeight: "300", padding: "1.5vh 0 1.5vh 6vh", width: "100%"};
+
+	const deleteStyles = {position: "absoulute", margin: "0", border: "none", borderBottom: "1px solid rgb(150 150 150)", backgroundColor: "white", border: "none", fontSize: "2.5vh"};
+
+	const listBottomStyles = {border: "1px solid rgb(150 150 150)", borderTop: "none", position: "relative", margin: "0 auto", boxShadow: "0vh 0vh 0.2vh rgba(0, 0, 0, 0.6)"};
 
 	//																							***FINISHED STYLES***
 
 	const [input, setInput] = useState("")
 	const [list, setList] = useState([])
+	const [hover, setHover] = useState([])
 
 	useEffect(() => {
-	const addToList = (event) => {
-		if (event.key === "Enter") { setList((currentList) => [input, ...currentList]);
-			console.log(list)
-			setInput("")
-		}
-	}
+		const addToList = (event) => {
+		  if (event.key === "Enter" && input.trim() !== "") { 
+			setList([input, ...list]);
+			setInput("");
+		  }
+		};
 		document.addEventListener("keydown", addToList);
-			
-		return () => {
-			document.removeEventListener("keydown", addToList)
-		}
-	}, [input])
+		return () => document.removeEventListener("keydown", addToList);
+	  }, [list, input]);
+
+	  const deleteHandler = (index) => setList(currentList => currentList.filter((_, place) => place !== index))
 
 	return (
 		<div style={generalDivStyles}>
-			<h1 style={todosStyles}>Hello Rigo!</h1>
+			<h1 style={todosStyles}>todos</h1>
 			<div style={listStyles}>
 				<input type="text" value={input} onChange={(e) => setInput(e.target.value)} required style={inputStyles} placeholder="What needs to be done?" />
 
-				{list.map((value, index) => {
-				<p key={index} style={inputStyles}>{value}<button onClick={setList((currentList) => [currentList.splice(index, 1)])}>X</button></p>
+				{list.map((value, index) => {() => setHover(hover => hover.map((item, idx) => idx === index ? false : item)) 
+					return <div onMouseEnter={() => setHover(hover => hover.map((item, idx) => idx === index ? true : item))} onMouseLeave={() => setHover(hover => hover.map((item, idx) => idx === index ? false : item))} style={{display: "flex"}} key={index}> <p style={itemsStyles}>{value}</p><button style={{...deleteStyles, ...(hover[index] ? {color: "black"} : {color: "white"}) }} onClick={() => deleteHandler}>X</button></div>
 				})}
 
 				<p style={{...inputStyles, ...{borderBottom: "none"}}}>items left</p>
@@ -64,3 +58,6 @@ const ToDosList = () => {
 };
 
 export default ToDosList;
+
+
+/*onMouseEnter={() => set IsHovered((hover) => hover = true)} onMouseLeave={() => setIsHovered((hover) => hover = false)} */
