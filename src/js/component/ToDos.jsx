@@ -54,7 +54,7 @@ const ToDosList = () => {
 					return <div onMouseEnter={() => setHover(hover => hover.map((item, idx) => idx === index ? true : item))} onMouseLeave={() => setHover(hover => hover.map((item, idx) => idx === index ? false : item))} style={{display: "flex"}} key={index}> <p style={itemsStyles}>{value}</p><button style={{...deleteStyles, ...(hover[index] ? {color: "rgb(200, 150, 150)"} : {color: "white"}) }} onClick={() => deleteHandler(index)}>X</button></div>
 				})}
 
-				<p style={{...leftStyles, ...{borderBottom: "none"}}}>items left</p>
+				<p style={{...leftStyles, ...{borderBottom: "none"}}}>{list.length} items left</p>
 			</div>
 			<div style={{...listBottomStyles, ...{height: "0.5vh", width: "59.5vh"}}}></div>
 			<div style={{...listBottomStyles, ...{height: "0.45vh", width: "59vh"}}}></div>
