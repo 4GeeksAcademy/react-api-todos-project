@@ -27,31 +27,43 @@ const ToDosList = () => {
 	const [input, setInput] = useState("")
 	const [list, setList] = useState([])
 	const [hover, setHover] = useState([])
+	const [hoverRemembers, setHoverRemembers] = useState()
 
 	useEffect(() => {
+		console.log(hover.map((item, idx) => idx === hoverRemembers ? true : item));
+		setHover(hover.map((item, idx) => idx === hoverRemembers ? true : item))
+	
+	}, [hoverRemembers]);
 
-		setHover(new Array(list.length).fill(false));
+	
+	useEffect(() => {
+		
 
 		const addToList = (event) => {
 		  if (event.key === "Enter" && input.trim() !== "") { 
 			setList([input, ...list]);
 			setInput("");
+			setHover(hover => [...hover, false])
 		  }
 		};
 		document.addEventListener("keydown", addToList);
 		return () => document.removeEventListener("keydown", addToList);
 	  }, [list, input]);
 
-	  const deleteHandler = (indx) => setList(currentList => currentList.filter((_, place) => place !== indx));
-
+	  const deleteHandler = (indx) => {
+		setList(currentList => currentList.filter((_, place) => place !== indx));
+		setHoverRemembers(indx)
+	  };
+	console.log(hover);
 	return (
 		<div style={generalDivStyles}>
 			<h1 style={todosStyles}>todos</h1>
 			<div style={listStyles}>
 				<input type="text" value={input} onChange={(e) => setInput(e.target.value)} required style={inputStyles} placeholder="What needs to be done?" />
 
-				{list.map((value, index) => {() => setHover(hover => hover.map((item, idx) => idx === index ? false : item)) 
-					return <div onMouseEnter={() => setHover(hover => hover.map((item, idx) => idx === index ? true : item))} onMouseLeave={() => setHover(hover => hover.map((item, idx) => idx === index ? false : item))} style={{display: "flex"}} key={index}> <p style={itemsStyles}>{value}</p><button style={{...deleteStyles, ...(hover[index] ? {color: "rgb(200, 150, 150)"} : {color: "white"}) }} onClick={() => deleteHandler(index)}>X</button></div>
+				{list.map((value, index) => {
+					return <div onMouseEnter={() => setHover(hover => hover.map((item, idx) => idx === index ? true : item))} onMouseLeave={() => setHover(hover => hover.map((item, idx) => idx === index ? false : item))} style={{display: "flex"}} key={index}> <p style={itemsStyles}>{value}</p>
+					<button style={{...deleteStyles, ...(hover[index] ? {color: "rgb(200, 150, 150)"} : {color: "white"}) }} onClick={() => {deleteHandler(index)}}>X</button></div>
 				})}
 
 				<p style={{...leftStyles, ...{borderBottom: "none"}}}>{list.length} items left</p>
