@@ -30,14 +30,13 @@ const ToDosList = () => {
 	const [hoverRemembers, setHoverRemembers] = useState()
 
 	useEffect(() => {
-		console.log(hover.map((item, idx) => idx === hoverRemembers ? true : item));
+
 		setHover(hover.map((item, idx) => idx === hoverRemembers ? true : item))
-	
+
 	}, [hoverRemembers]);
 
 	
 	useEffect(() => {
-		
 
 		const addToList = (event) => {
 		  if (event.key === "Enter" && input.trim() !== "") { 
@@ -48,10 +47,12 @@ const ToDosList = () => {
 		};
 		document.addEventListener("keydown", addToList);
 		return () => document.removeEventListener("keydown", addToList);
+		
 	  }, [list, input]);
 
 	  const deleteHandler = (indx) => {
 		setList(currentList => currentList.filter((_, place) => place !== indx));
+		setHover(currentHover => currentHover.filter((_, place) => place !== hover.length - 1));
 		setHoverRemembers(indx)
 	  };
 	console.log(hover);
