@@ -53,8 +53,8 @@ useEffect(() => {
 					"Content-Type": "application/json"
 				  },
 				body: JSON.stringify([]),
-				}).then((dataCreation) => {if (dataCreation.result == "ok"){console.log("Username created succesfully")} else {console.log("Username was not created " + dataCreation)}})
-				.catch((error) => console.log(error))}})
+				}).then((data) => console.log("Username created successfully " + data))
+				.catch((error) => console.error("Failed to create Username " + error))}})
 
 	list.length ?
 			fetch ("https://playground.4geeks.com/apis/fake/todos/user/ErnestWarhead", {
@@ -65,10 +65,10 @@ useEffect(() => {
 				body: JSON.stringify(list)})
 				.then(response => response.json())
 				.then(data => {
-				  console.log("List updated successfully", data);
+				  console.log("Data updated or Username created successfully", data);
 				})
 				.catch(error => {
-				  console.error("Failed to update list", error);
+				  console.error("Failed to update data", error);
 				}) 
 
 				:
@@ -81,10 +81,10 @@ useEffect(() => {
 				PARAMS: "none"})
 				.then(response => response.json())
 				.then(data => {
-				  console.log("List updated successfully", data);
+				  console.log("Username deleted successfully", data);
 				})
 				.catch(error => {
-				  console.error("Failed to update list", error);
+				  console.error("Failed to delete Username", error);
 				})
 		}, [list])
 	
