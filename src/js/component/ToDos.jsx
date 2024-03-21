@@ -26,7 +26,7 @@ const ToDosList = () => {
 				headers: {
 					"Content-Type": "application/json"
 				  },
-				body: []
+				body: JSON.stringify([]),
 				}).then((dataCreation) => {if (dataCreation.result === "ok"){console.log("Username created succesfully")} else {console.log("Username was not created " + dataCreation)}})
 				.catch((error) => console.log(error))
 			} else {setList(data)}
@@ -52,8 +52,8 @@ useEffect(() => {
 				headers: {
 					"Content-Type": "application/json"
 				  },
-				body: []
-				}).then((dataCreation) => {if (dataCreation.result === "ok"){console.log("Username created succesfully")} else {console.log("Username was not created " + dataCreation)}})
+				body: JSON.stringify([]),
+				}).then((dataCreation) => {if (dataCreation.result == "ok"){console.log("Username created succesfully")} else {console.log("Username was not created " + dataCreation)}})
 				.catch((error) => console.log(error))}})
 
 	list.length ?
